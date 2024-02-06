@@ -2,7 +2,7 @@
 import os
 from PIL import Image
 import streamlit as st
-from utils import create_contact_sheet
+from utils import create_contact_sheet  # Make sure to import the corrected function
 
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
