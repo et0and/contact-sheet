@@ -3,6 +3,7 @@ from PIL import Image
 import os
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader  # New import for ImageReader
 
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
@@ -20,14 +21,14 @@ def images_to_pdf(image_paths, output_file, columns=4, rows=6):
     for i, image_path in enumerate(image_paths):
         if image_path.lower().endswith(accepted_extensions):
             img = Image.open(image_path)
-            img.thumbnail((image_width, image_height), Image.ANTIALIAS)  # Resize the image
+            img.thumbnail((image_width, image_height), Image.Resampling.LANCZOS)  # Resize the image
 
             # Calculate the position of the image on the page
             x = (i % columns) * image_width
             y = page_height - ((i // columns) * image_height) - image_height
 
             # Add the image to the PDF
-            c.drawInlineImage(img, x, y, image_width, image_height)
+            c.drawImage(ImageReader(img), x, y, image_width, image_height)  # Use drawImage instead of drawInlineImage
 
             # If we've filled the current page, create a new one
             if (i + 1) % (columns * rows) == 0:
@@ -36,5 +37,3 @@ def images_to_pdf(image_paths, output_file, columns=4, rows=6):
 
     # Save the PDF
     c.save()
-
-# The create_contact_sheet_no_crop function is no longer needed, so we can remove it
