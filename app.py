@@ -9,7 +9,7 @@ accepted_extensions = (".jpg", ".jpeg", ".png")
 def main():
     st.title('Contact Sheet Generator')
 
-    output_dir = 'contact_sheets'
+    output_dir = 'contact_sheets'  # This should be a directory, not a file
     image_files = st.file_uploader('Upload images', type=accepted_extensions, accept_multiple_files=True)
 
     if st.button('Generate Contact Sheets'):
@@ -24,7 +24,7 @@ def main():
                     f.write(image_file.getbuffer())
                 image_paths.append(file_path)
 
-            num_sheets = create_contact_sheet(image_paths, output_dir, padding_bottom=200)  # Adjust the padding_bottom parameter as needed
+            num_sheets = create_contact_sheet(image_paths, output_dir)
 
             # Display the contact sheets
             for i in range(1, num_sheets + 1):
