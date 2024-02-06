@@ -26,8 +26,10 @@ def main():
 
             images_to_pdf(image_paths, output_file)
 
-            # Display a link to download the PDF
-            st.markdown(f'<a href="{output_file}" target="_blank">Download PDF</a>', unsafe_allow_html=True)
+            # Display a download button for the PDF
+            with open(output_file, "rb") as pdf_file:
+                PDFbyte = pdf_file.read()
+            st.download_button(label="Download PDF", data=PDFbyte, file_name=output_file, mime='application/octet-stream')
 
             # Clean up uploaded images
             for file_path in image_paths:
