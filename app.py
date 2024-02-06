@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 import streamlit as st
-from utils import create_contact_sheet, heic_converter
+from utils import create_contact_sheet_no_crop
 
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
@@ -10,7 +10,6 @@ def main():
 
     output_file = 'contact_sheet.jpg'
     image_files = st.file_uploader('Upload images', type=accepted_extensions, accept_multiple_files=True)
-    heic_arg = st.checkbox('Convert HEIC images')
     spacing = st.number_input('Spacing between images', value=10)
 
     if st.button('Generate Contact Sheet'):
@@ -25,10 +24,7 @@ def main():
                     f.write(image_file.getbuffer())
                 image_paths.append(file_path)
 
-                if heic_arg and image_file.name.lower().endswith(".heic"):
-                    heic_converter(path=file_path, out_path=file_path.replace(".heic", ".jpg"), format='jpg')
-
-            create_contact_sheet(image_paths, output_file, (100, 100))
+            create_contact_sheet_no_crop(image_paths, output_file, spacing)
 
             # Display the contact sheet
             st.image(Image.open(output_file), caption='Generated Contact Sheet', use_column_width=True)
