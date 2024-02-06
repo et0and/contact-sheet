@@ -24,7 +24,7 @@ def main():
                     f.write(image_file.getbuffer())
                 image_paths.append(file_path)
 
-            num_sheets = create_contact_sheet(image_paths, output_dir, extra_rows=2)  # Adjust the extra_rows parameter as needed
+            num_sheets = create_contact_sheet(image_paths, output_dir, padding_bottom=200)  # Adjust the padding_bottom parameter as needed
 
             # Display the contact sheets
             for i in range(1, num_sheets + 1):
