@@ -1,9 +1,8 @@
+# utils.py
 from PIL import Image
 import os
-from rectpack import newPacker
-from tqdm import tqdm
 import math
-from wand.image import Image as wandImage
+
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
 def create_contact_sheet_no_crop(image_paths, output_file, img_size):
@@ -14,7 +13,6 @@ def create_contact_sheet_no_crop(image_paths, output_file, img_size):
         img_size = len(image_paths)
     for filename in image_paths[0:img_size]:
         if filename.lower().endswith(accepted_extensions):
-            
             img = Image.open(filename)
             images.append(img)
             sizes.append(img.size)
@@ -22,35 +20,19 @@ def create_contact_sheet_no_crop(image_paths, output_file, img_size):
 
     # calculate the side of a square that can contain all images
     side = int(math.sqrt(total_size))
-    # create a new packer
-    packer = newPacker(rotation=False)
-
-    # add the rectangles to packing queue
-    for i, size in enumerate(sizes):
-        packer.add_rect(*size, i) 
-
-    # add the bin (final image)
-    packer.add_bin(side, side)
-
-    # start packing
-    print("Packing started, may take some time. Please wait...")
-    packer.pack()
-
-    # full bin packing
-    all_rects = packer.rect_list()
 
     # create a blank canvas
     contact_sheet = Image.new('RGB', (side, side))
 
-    return contact_sheet,all_rects,images
+    # Placeholder for the rectangles and packing logic
+    # Since rectpack is not available in Streamlit, you would need to implement your own logic
+    all_rects = []
+    for i, img in enumerate(images):
+        all_rects.append((img.size[0], img.size[1], i))
 
+    return contact_sheet, all_rects, images
 
-
-
-
-def heic_converter(path, out_path,format='jpeg'):
-    with wandImage(filename=path) as img:
-        img.format = format
-        img.save(filename=out_path)
-
-
+def heic_converter(path, out_path, format='jpeg'):
+    # Since wand is not available in Streamlit, you would need to find an alternative way to convert HEIC images
+    # For example, you could use a system call to a command-line tool like ImageMagick
+    os.system(f"magick {path} {out_path}")
