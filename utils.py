@@ -1,15 +1,17 @@
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import os
 
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
-def create_contact_sheet(image_paths, output_file, columns=4, rows=6):
+def create_contact_sheet(image_paths, output_file, columns=4, rows=6, padding=5):
     # Define the size of the contact sheet
-    contact_sheet_width = columns * 100  # Each image is 100x100 pixels
-    contact_sheet_height = rows * 100
+    image_size = 100  # Each image and padding is 100x100 pixels
+    contact_sheet_width = columns * image_size
+    contact_sheet_height = rows * image_size
 
     # Create a blank contact sheet
-    contact_sheet = Image.new('RGB', (contact_sheet_width, contact_sheet_height))
+    contact_sheet = Image.new('RGB', (contact_sheet_width, contact_sheet_height), color='white')
+    draw = ImageDraw.Draw(contact_sheet)
 
     x = 0
     y = 0
@@ -17,14 +19,16 @@ def create_contact_sheet(image_paths, output_file, columns=4, rows=6):
         if filename.lower().endswith(accepted_extensions):
             img = Image.open(filename)
             # Resize the image to fit the grid cell
-            img.thumbnail((100, 100), Image.Resampling.LANCZOS)  # Use Image.Resampling.LANCZOS instead of Image.ANTIALIAS
-            # Paste the image into the contact sheet
-            contact_sheet.paste(img, (x, y))
+            img.thumbnail((image_size - padding * 2, image_size - padding * 2), Image.Resampling.LANCZOS)
+            # Paste the image into the contact sheet with padding
+            contact_sheet.paste(img, (x + padding, y + padding))
+            # Draw the file name below the image
+            draw.text((x + padding, y + image_size - padding), os.path.basename(filename), fill='black')
             # Move position to the right for the next image
-            x += 100
+            x += image_size
             if x >= contact_sheet_width:
                 x = 0
-                y += 100
+                y += image_size
                 if y >= contact_sheet_height:
                     print("Contact sheet is full.")
                     break
