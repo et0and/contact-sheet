@@ -17,7 +17,7 @@ def create_contact_sheet(image_paths, output_file, columns=4, rows=6):
         if filename.lower().endswith(accepted_extensions):
             img = Image.open(filename)
             # Resize the image to fit the grid cell
-            img.thumbnail((100, 100), Image.ANTIALIAS)
+            img.thumbnail((100, 100), Image.Resampling.LANCZOS)  # Use Image.Resampling.LANCZOS instead of Image.ANTIALIAS
             # Paste the image into the contact sheet
             contact_sheet.paste(img, (x, y))
             # Move position to the right for the next image
