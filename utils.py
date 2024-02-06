@@ -3,11 +3,11 @@ import os
 
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
-def create_contact_sheet(image_paths, output_dir, columns=4, rows=6, padding=5, padding_bottom=100):
+def create_contact_sheet(image_paths, output_dir, columns=4, rows=6, padding=5):
     # Define the size of the contact sheet
     image_size = 100  # Each image and padding is 100x100 pixels
     contact_sheet_width = columns * image_size
-    contact_sheet_height = rows * image_size + padding_bottom  # Additional padding at the bottom
+    contact_sheet_height = rows * image_size
 
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
@@ -45,9 +45,8 @@ def create_contact_sheet(image_paths, output_dir, columns=4, rows=6, padding=5, 
                     draw = ImageDraw.Draw(contact_sheet)
 
     # Save the last contact sheet
-    if y > 0:  # Only save if there are images on the sheet
-        output_file = os.path.join(output_dir, f'contact_sheet_{current_sheet}.jpg')
-        contact_sheet.save(output_file, "JPEG")
-        print(f"Saved contact sheet {current_sheet}")
+    output_file = os.path.join(output_dir, f'contact_sheet_{current_sheet}.jpg')
+    contact_sheet.save(output_file, "JPEG")
+    print(f"Saved contact sheet {current_sheet}")
 
     return current_sheet  # Return the number of contact sheets generated
