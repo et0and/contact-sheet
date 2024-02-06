@@ -2,3 +2,4 @@ Pillow
 tqdm
 rectpack
 wand
+reportlab
