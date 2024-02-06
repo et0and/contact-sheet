@@ -1,16 +1,16 @@
+# app.py
 import os
 from PIL import Image
 import streamlit as st
-from utils import create_contact_sheet_no_crop
+from utils import images_to_pdf
 
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
 def main():
     st.title('Contact Sheet Generator')
 
-    output_file = 'contact_sheet.jpg'
+    output_file = 'contact_sheet.pdf'
     image_files = st.file_uploader('Upload images', type=accepted_extensions, accept_multiple_files=True)
-    spacing = st.number_input('Spacing between images', value=10)
 
     if st.button('Generate Contact Sheet'):
         if image_files:
@@ -24,10 +24,12 @@ def main():
                     f.write(image_file.getbuffer())
                 image_paths.append(file_path)
 
-            create_contact_sheet_no_crop(image_paths, output_file, spacing)
+            images_to_pdf(image_paths, output_file)
 
-            # Display the contact sheet
-            st.image(Image.open(output_file), caption='Generated Contact Sheet', use_column_width=True)
+            # Display a link to download the PDF
+            with open(output_file, "rb") as pdf_file:
+                PDFbyte = pdf_file.read()
+            st.download_button(label="Download PDF", data=PDFbyte, file_name=output_file, mime='application/octet-stream')
 
             # Clean up uploaded images
             for file_path in image_paths:
