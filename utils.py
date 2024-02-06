@@ -3,11 +3,11 @@ import os
 
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
-def create_contact_sheet(image_paths, output_dir, columns=4, rows=6, padding=5, extra_rows=1):
+def create_contact_sheet(image_paths, output_dir, columns=4, rows=6, padding=5, padding_bottom=100):
     # Define the size of the contact sheet
     image_size = 100  # Each image and padding is 100x100 pixels
     contact_sheet_width = columns * image_size
-    contact_sheet_height = (rows + extra_rows) * image_size
+    contact_sheet_height = rows * image_size + padding_bottom  # Additional padding at the bottom
 
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
