@@ -4,6 +4,13 @@ from PIL import Image
 import streamlit as st
 from utils import create_contact_sheet  # Make sure to import the corrected function
 
+st.set_page_config(
+    page_title="Contact sheet generator",
+    page_icon=None,
+    layout="wide",
+    initial_sidebar_state="auto"
+)
+
 accepted_extensions = (".jpg", ".jpeg", ".png")
 
 def main():
